@@ -6,6 +6,7 @@ int main(int argc, char const *argv[])
 {
 	BinaryTree<int> *root = nullptr;
 
+	std::cout << min(3, 4, 20) << std::endl;
 	insert(root, 80);
 	insert(root, 40);
 	insert(root, 100);
@@ -29,17 +30,17 @@ int main(int argc, char const *argv[])
 	}
 	std::cout << std::endl;
 	
-	remove(root, 120);
-	debug();
+	remove(root, 85);
 	printTree(root);
 	std::cout << "===========================================" << std::endl;
 	node1 =  findMin(root);
 	while (node1)
 	{
-		// DEBUG();
 		std::cout << node1->key << " " << std::flush ;
 		node1 = next(root, node1);
 	}
 	std::cout << std::endl;
+
+	makeEmpty(root);
 	return 0;
 }

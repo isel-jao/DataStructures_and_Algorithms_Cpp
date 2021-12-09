@@ -271,6 +271,17 @@ namespace ft
 		return root;
 	}
 
+	template <typename KEY>
+	void makeEmpty(BinaryTree<KEY> *&root)
+	{
+		if (root == nullptr)
+			return;
+		makeEmpty(root->left);
+		makeEmpty(root->right);
+		delete root;
+		root = nullptr;
+	}
+
 	// iterative insertion
 	// template <typename KEY>
 	// BinaryTree<KEY> *insert(BinaryTree<KEY> *&root, KEY const &k)
