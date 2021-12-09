@@ -1,5 +1,7 @@
 #include "main.hpp"
 
+using namespace ft;
+
 int main(int argc, char const *argv[])
 {
 	BinaryTree<int> *root = nullptr;
@@ -27,7 +29,8 @@ int main(int argc, char const *argv[])
 	}
 	std::cout << std::endl;
 	
-	rl_rotate(root);
+	remove(root, 120);
+	debug();
 	printTree(root);
 	std::cout << "===========================================" << std::endl;
 	node1 =  findMin(root);

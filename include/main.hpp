@@ -8,8 +8,10 @@
 #include <map>
 #include <string.h>
 
-#include "BinarySearchTree.hpp"
+#include "BinaryTree.hpp"
+#include "colorsMacros.hpp"
+#include "utils.hpp"
 
-
+#define DEBUG() std::cout << "function: " << __FUNCTION__ << ", line: " << __LINE__ << std::endl
 
 #endif
