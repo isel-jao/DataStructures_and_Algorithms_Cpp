@@ -7,11 +7,11 @@
 #include <stack>
 #include <map>
 #include <string.h>
-
-#include "BinaryTree.hpp"
 #include "colorsMacros.hpp"
-#include "utils.hpp"
 
-#define DEBUG() std::cout << "function: " << __FUNCTION__ << ", line: " << __LINE__ << std::endl
+#define DEBUG() std::cout << BOLDCYAN  << "DEBUG: " << RESET << "function: " << __FUNCTION__ << ", line: " << __LINE__ << std::endl
+#include "utils.hpp"
+#include "BinaryTree.hpp"
+
 
 #endif

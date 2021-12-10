@@ -7,35 +7,41 @@ namespace ft
 	struct BinaryTree
 	{
 		KEY key;
+		BinaryTree *parent;
 		BinaryTree *left;
 		BinaryTree *right;
 		long height;
 
-		BinaryTree(KEY k = KEY(), BinaryTree *l = nullptr, BinaryTree *r = nullptr) : key(k), left(l), right(r), height(0) {}
+		BinaryTree(KEY k = KEY(), BinaryTree *p = nullptr, BinaryTree *l = nullptr, BinaryTree *r = nullptr)
+			: key(k), parent(p), left(l), right(r), height(0) {}
 		~BinaryTree() {}
 	};
+
 	template <typename KEY>
 	long getHeight(BinaryTree<KEY> *node)
 	{
-		if (node)
-			return (node->height);
-		return (-1);
+		if (node == nullptr)
+			return (-1);
+		return node->height;
 	}
+
+	template <typename KEY>
+	long getBalence(BinaryTree<KEY> *node) { return (getHeight(node->right) - getHeight(node->left)); }
 
 	// recursion insertion
 	template <typename KEY>
-	BinaryTree<KEY> *insert(BinaryTree<KEY> *&root, KEY k)
+	BinaryTree<KEY> *insert(BinaryTree<KEY> *&root, KEY k, BinaryTree<KEY> *parent = nullptr)
 	{
 		BinaryTree<KEY> *node;
 		if (root == nullptr)
 		{
-			root = new BinaryTree<KEY>(k);
+			root = new BinaryTree<KEY>(k, parent);
 			return (root);
 		}
 		if (root->key < k)
-			node = insert(root->right, k);
+			node = insert(root->right, k, root);
 		else if (k < root->key)
-			node = insert(root->left, k);
+			node = insert(root->left, k, root);
 		else
 			return (nullptr);
 		return node;
@@ -46,12 +52,40 @@ namespace ft
 	{
 		if (root == nullptr)
 			return;
+		long long balence = getBalence(root);
 		printTree(root->right, depth + 1);
 		for (size_t i = 0; i < depth; i++)
 			std::cout << dil;
-		std::cout << root->key << "\n";
+		std::cout << BOLDCYAN << root->key << RESET
+				  << "/" << getHeight(root)
+				  << "/" << ((balence < 2 && balence > -2) ? GREEN : RED) << balence << RESET
+				  << std::endl;
+		std::cout << RESET;
 		printTree(root->left, depth + 1);
 	}
+
+	template <typename KEY>
+	void balenceTree(BinaryTree<KEY> *&root, KEY key)
+	{
+		long balence = getBalence(root);
+		if (balence <= 1 && balence >= -1)
+			return;
+		if (key < root->key)
+		{
+			if (key < root->left->key)
+				ll_rotate(root);
+			else
+				lr_rotate(root);
+		}
+		else
+		{
+			if (key < root->right->key)
+				rl_rotate(root);
+			else
+				rr_rotate(root);
+		}
+	}
+
 	template <typename KEY>
 	bool remove(BinaryTree<KEY> *&root, KEY const &key)
 	{
@@ -69,15 +103,25 @@ namespace ft
 
 		// if node has only the right child or no children
 		if (root->left == nullptr)
+		{
+			debug();
+			if (root->right)
+				root->right->parent = root->parent;
 			root = root->right;
+		}
 
 		// if node has only the left child
 		else if (root->right == nullptr)
+		{
+			debug();
+			root->left->parent = root->parent;
 			root = root->left;
+		}
 
 		// if node has both children
 		else
 		{
+			DEBUG();
 			BinaryTree<KEY> *succParent = nullptr;
 			BinaryTree<KEY> *succ = root->right;
 			while (succ->left)
@@ -88,9 +132,15 @@ namespace ft
 			if (succParent)
 			{
 				succParent->left = succ->right;
+				if (succ->right)
+					succ->right->parent = succParent;
 				succ->right = root->right;
+				root->right->parent = succ;
 			}
+			root->left->parent = succ;
 			succ->left = root->left;
+
+			succ->parent = root->parent;
 			root = succ;
 		}
 
