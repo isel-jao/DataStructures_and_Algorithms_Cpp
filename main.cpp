@@ -2,52 +2,45 @@
 
 using namespace ft;
 
+template <typename BinaryTree>
+void printTree(BinaryTree*root, size_t depth = 0, std::string const &dil = "      ")
+{
+	if (root == nullptr)
+		return;
+	printTree(root->_right, depth + 1);
+	for (size_t i = 0; i < depth; i++)
+		std::cout << dil;
+	std::cout << BOLDCYAN << root->_key << RESET << std::endl;
+	printTree(root->_left, depth + 1);
+}
 int main(int argc, char const *argv[])
 {
-	BinaryTree<int> *root = nullptr;
+	SplayTree<int> *root = nullptr;
 
-	// std::cout << min(3, 4, 20) << std::endl;
-	insert(root, 80);
-	insert(root, 40);
-	insert(root, 100);
-	insert(root, 20);
-	insert(root, 30);
-	insert(root, 120);
-	insert(root, 130);
-	insert(root, 128);
-	insert(root, 125);
-	insert(root, 127);
-	insert(root, 126);
-	insert(root, 110);
-	insert(root, 105);
-	insert(root, 106);
-	insert(root, 90);
-	insert(root, 85);
-	insert(root, 81);
-	insert(root, 82);
-
-
+	insert(root, 7);
+	insert(root, 6);
+	insert(root, 5);
+	insert(root, 4);
+	insert(root, 3);
+	insert(root, 2);
+	insert(root, 1);
 	printTree(root);
-	std::cout << "===========================================" << std::endl;
-	BinaryTree<int> *node1 = findMin(root);
-	while (node1)
+	right_rotate(root);
+	printTree(root);
+	right_rotate(find(root, 4));
+	printTree(root);
+	right_rotate(find(root, 5));
+	printTree(root);
+	SplayTree<int > *node = find(root, 7);
+	while (node)
 	{
-		std::cout << node1->key << " " << std::flush;
-		node1 = next(root, node1);
+		std::cout << node->_key << " ";
+		node = node->_parent;
 	}
 	std::cout << std::endl;
+	
 
-	// remove(root, 120);
-	// printTree(root);
-	// std::cout << "===========================================" << std::endl;
-	// node1 = find(root, 82);
-	// while (node1)
-	// {
-	// 	std::cout << node1->key << " ";
-	// 	node1 = node1->parent;
-	// }
-	// std::cout << std::endl;
-
-	makeEmpty(root);
 	return 0;
 }
+
+

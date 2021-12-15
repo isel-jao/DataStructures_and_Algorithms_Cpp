@@ -11,7 +11,7 @@
 
 #define DEBUG() std::cout << BOLDCYAN  << "DEBUG: " << RESET << "function: " << __FUNCTION__ << ", line: " << __LINE__ << std::endl
 #include "utils.hpp"
-#include "BinaryTree.hpp"
+#include "SplayTree.hpp"
 
 
 #endif
